@@ -6,6 +6,13 @@ import router from './router'
 import store from './store'
 Vue.config.productionTip = false
 
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !store.state.isLogin) {
+    next({ path: '/login' })
+  } else {
+    next()
+  }
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
