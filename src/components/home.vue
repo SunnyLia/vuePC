@@ -11,6 +11,8 @@
         text-color="#fff"
         active-text-color="#ffd04b"
         style="border-right:0"
+        default-active="this.$route.path"
+        router
       >
         <template v-for="(value,ind) in navMenus">
           <el-submenu :index="ind+''" v-if="value.lists.length>0" :key="ind">
@@ -25,15 +27,15 @@
                   <template slot="title">{{v.listName}}</template>
                   <el-menu-item
                     v-for="(item,inde) in v.listItems"
-                    :index="ind+'-'+i+'-'+inde"
+                    :index="item.url"
                     :key="inde"
                   >{{item.itemName}}</el-menu-item>
                 </el-submenu>
-                <el-menu-item v-else :key="i" :index="ind+'-'+i">{{v.listName}}</el-menu-item>
+                <el-menu-item v-else :key="i" :index="v.url">{{v.listName}}</el-menu-item>
               </template>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item v-else :key="ind" :index="ind+''">
+          <el-menu-item v-else :key="ind" :index="value.url">
             <i :class="value.icon"></i>
             {{value.title}}
           </el-menu-item>

@@ -24,19 +24,19 @@ export default new Router({
       children: [
         {
           path: '/main',
-          component: UserProfile
+          component: Main
         },
         {
           path: '/manage',
-          component: UserPosts
+          component: Manage
         },
         {
           path: '/news',
-          component: UserProfile
+          component: Manage
         },
         {
           path: '/lists',
-          component: UserPosts
+          component: Manage
         }
       ]
     }, {
