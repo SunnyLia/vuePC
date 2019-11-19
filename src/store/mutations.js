@@ -4,6 +4,6 @@ export default {
         state.isLogin = result
     },
     [types.NAV_MENUS](state,result){
-        state.NAV_MENUS = result
+        state.navMenus = result
     },
 }
