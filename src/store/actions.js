@@ -7,12 +7,12 @@ const menus = [
         icon:"el-icon-menu"
     }, {
         title: "内容管理",
-        url: "/manage",
+        url: "",
         icon:"el-icon-tickets",
         lists: [
             {
                 listName: "消息中心",
-                url: "/news",
+                url: "/manage",
                 listItems: []
             },
             {
