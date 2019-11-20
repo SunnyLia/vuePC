@@ -22,20 +22,17 @@
               <i :class="value.icon"></i>
               {{value.title}}
             </template>
-
-            <el-menu-item-group>
-              <template v-for="(v,i) in value.lists">
-                <el-submenu :index="ind+'-'+i" v-if="v.listItems.length>0" :key="i">
-                  <template slot="title">{{v.listName}}</template>
-                  <el-menu-item
-                    v-for="(item,inde) in v.listItems"
-                    :index="item.url"
-                    :key="inde"
-                  >{{item.itemName}}</el-menu-item>
-                </el-submenu>
-                <el-menu-item v-else :key="i" :index="v.url">{{v.listName}}</el-menu-item>
-              </template>
-            </el-menu-item-group>
+            <template v-for="(v,i) in value.lists">
+              <el-submenu :index="ind+'-'+i" v-if="v.listItems.length>0" :key="i">
+                <template slot="title">{{v.listName}}</template>
+                <el-menu-item
+                  v-for="(item,inde) in v.listItems"
+                  :index="item.url"
+                  :key="inde"
+                >{{item.itemName}}</el-menu-item>
+              </el-submenu>
+              <el-menu-item v-else :key="i" :index="v.url">{{v.listName}}</el-menu-item>
+            </template>
           </el-submenu>
           <el-menu-item v-else :key="ind" :index="value.url">
             <i :class="value.icon"></i>
@@ -47,15 +44,17 @@
 
     <el-container>
       <el-header class="conHeader">
-        <span>欢迎！张张你大爷</span>
-        <el-dropdown>
-          <i class="el-icon-setting" style="margin-left: 15px"></i>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>消息</el-dropdown-item>
-            <el-dropdown-item>设置</el-dropdown-item>
-            <el-dropdown-item @click.native="removeS">退出</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <div style="text-align: right;">
+          <span>欢迎！张张你大爷</span>
+          <el-dropdown>
+            <i class="el-icon-setting" style="margin-left: 15px"></i>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>消息</el-dropdown-item>
+              <el-dropdown-item>设置</el-dropdown-item>
+              <el-dropdown-item @click.native="removeS">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </el-header>
       <el-main>
         <router-view></router-view>
@@ -70,6 +69,11 @@ export default {
   mounted() {
     this.$store.dispatch("getNavMenu");
   },
+  // watch: {
+  //   $route(to, from) {
+  //     console.log(to.path);
+  //   }
+  // },
   methods: {
     removeS() {
       sessionStorage.removeItem("user");
@@ -80,7 +84,6 @@ export default {
 </script>
 <style>
 .conHeader {
-  text-align: right;
   font-size: 12px;
   line-height: 60px;
   background-color: #232730;
