@@ -1,17 +1,19 @@
 <template>
   <el-container style="height:100%">
     <el-aside width="200px" style="background-color:#323844">
-      <img
-        style="height:60px;border-radius: 50%;"
-        src="https://hbimg.huabanimg.com/322e523731a5022eed6c9da7a573ddee230d06b11bc5-lQSMDi_fw658"
-        alt
-      />
+      <div style="text-align:center">
+        <img
+          style="height:60px;border-radius: 50%;"
+          src="https://hbimg.huabanimg.com/322e523731a5022eed6c9da7a573ddee230d06b11bc5-lQSMDi_fw658"
+          alt
+        />
+      </div>
       <el-menu
         background-color="#323844"
         text-color="#fff"
         active-text-color="#ffd04b"
         style="border-right:0"
-        default-active="this.$route.path"
+        :default-active="this.$route.path"
         router
       >
         <template v-for="(value,ind) in navMenus">
@@ -51,7 +53,7 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>消息</el-dropdown-item>
             <el-dropdown-item>设置</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item @click.native="removeS">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -67,6 +69,12 @@ export default {
   computed: mapState(["navMenus"]),
   mounted() {
     this.$store.dispatch("getNavMenu");
+  },
+  methods: {
+    removeS() {
+      sessionStorage.removeItem("user");
+      this.$router.push({ path: "/ogin" });
+    }
   }
 };
 </script>

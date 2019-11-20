@@ -73,7 +73,7 @@ export default {
 .imgShadow {
   width: 70px;
   border-radius: 50%;
-  margin: 10px 10px 20px 100px;
+  margin: 10px 10px 20px 150px;
   box-shadow: 0 0 15px 5px #ddd;
 }
 </style>
