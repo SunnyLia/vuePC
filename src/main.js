@@ -10,13 +10,22 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.requiresAuth && !store.state.isLogin) {
-//     next({ path: '/login' })
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  let auth = sessionStorage.getItem('user');
+  if (auth) { //登陆了
+    if (to.path === "/login") {
+      next({ path: '/' })
+    } else {
+      next()
+    }
+  } else { //没登陆
+    if (to.path === "/login") {
+      next()
+    } else {
+      next({ path: '/login' })
+    }
+  }
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
