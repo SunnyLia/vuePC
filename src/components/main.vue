@@ -1,144 +1,87 @@
 <template>
-  <el-row :gutter="20">
-    <el-col :span="16">
-      <el-card class="box-card">
-        <div id="echarts1" style="height:500px"></div>
-      </el-card>
-    </el-col>
-    <el-col :span="8">
-      <div class="grid-content bg-purple">111111111111</div>
-    </el-col>
-  </el-row>
+  <div>
+    <el-row :gutter="20">
+      <el-col :span="16">
+        <el-card class="box-card">
+          <div id="echarts1" style="height:500px"></div>
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content bg-purple">
+          <div id="echarts3" style="height:500px"></div>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :span="16">
+        <el-card class="box-card">
+          <div id="echarts2" style="height:500px"></div>
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content bg-purple">
+          <div id="echarts4" style="height:500px"></div>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 <script>
 import echarts from "echarts";
 export default {
   mounted() {
-    this.initEcharts1();
+    this.lineRender();
+    this.barRender();
+    this.piaRender();
+    this.radarRender();
   },
   methods: {
-    initEcharts1() {
-      // 基于准备好的dom，初始化echarts实例
+    // 柱状折线渲染
+    lineRender() {
       var myChart = echarts.init(document.getElementById("echarts1"));
-      var base = +new Date(2016, 9, 3);
-      var oneDay = 24 * 3600 * 1000;
-      var valueBase = Math.random() * 300;
-      var valueBase2 = Math.random() * 50;
-      var data = [];
-      var data2 = [];
-
-      for (var i = 1; i < 10; i++) {
-        var now = new Date((base += oneDay));
-        var dayStr = [
-          now.getFullYear(),
-          now.getMonth() + 1,
-          now.getDate()
-        ].join("-");
-
-        valueBase = Math.round((Math.random() - 0.5) * 50 + valueBase);
-        valueBase <= 0 && (valueBase = Math.random() * 100);
-        data.push([dayStr, valueBase]);
-
-        valueBase2 = Math.round((Math.random() - 0.5) * 20 + valueBase2);
-        valueBase2 <= 0 && (valueBase2 = Math.random() * 550);
-        data2.push([dayStr, valueBase2]);
-      }
-      // 指定图表的配置项和数据
-      var option = {
-        animation: false,
+      var options = {
         title: {
-          left: "center",
-          text: "触屏 tooltip 和 dataZoom 示例",
-          subtext: '"tootip" and "dataZoom" on mobile device'
-        },
-        legend: {
-          top: "bottom",
-          data: ["意向"]
-        },
-        tooltip: {
-          triggerOn: "none",
-          position: function(pt) {
-            return [pt[0], 130];
-          }
-        },
-        toolbox: {
-          left: "center",
-          itemSize: 25,
-          top: 55,
-          feature: {
-            dataZoom: {
-              yAxisIndex: "none"
-            },
-            restore: {}
-          }
+          text: "我只是来测试的",
+          x: "left"
         },
         xAxis: {
-          type: "time",
-          // boundaryGap: [0, 0],
-          axisPointer: {
-            value: "2016-10-7",
-            snap: true,
-            lineStyle: {
-              color: "#004E52",
-              opacity: 0.5,
-              width: 2
-            },
-            label: {
-              show: true,
-              formatter: function(params) {
-                return echarts.format.formatTime("yyyy-MM-dd", params.value);
-              },
-              backgroundColor: "#004E52"
-            },
-            handle: {
-              show: true,
-              color: "#004E52"
-            }
-          },
           splitLine: {
             show: false
-          }
+          },
+          boundaryGap: false,
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         },
         yAxis: {
-          type: "value",
-          axisTick: {
-            inside: true
-          },
           splitLine: {
             show: false
-          },
-          axisLabel: {
-            inside: true,
-            formatter: "{value}\n"
-          },
-          z: 10
+          }
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow"
+          }
         },
         grid: {
-          top: 110,
-          left: 15,
-          right: 15,
-          height: 160
+          x: "10%",
+          x2: "10%",
+          y: "10%",
+          y2: "10%",
+          borderWidth: 0
         },
-        dataZoom: [
-          {
-            type: "inside",
-            throttle: 50
-          }
-        ],
         series: [
           {
-            name: "模拟数据",
+            name: "放款",
             type: "line",
             smooth: true,
-            symbol: "circle",
-            symbolSize: 5,
-            sampling: "average",
             itemStyle: {
               normal: {
                 color: "#8ec6ad"
               }
             },
-            stack: "a",
+            markPoint: {
+              data: [{ type: "max", name: "最大值" }]
+            },
             areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -153,16 +96,13 @@ export default {
                 ])
               }
             },
-            data: data
+            barMaxWidth: 35,
+            data: [820, 932, 901, 934, 1290, 1330, 1320]
           },
           {
-            name: "模拟数据",
+            name: "还款",
             type: "line",
             smooth: true,
-            stack: "a",
-            symbol: "circle",
-            symbolSize: 5,
-            sampling: "average",
             itemStyle: {
               normal: {
                 color: "#d68262"
@@ -182,13 +122,195 @@ export default {
                 ])
               }
             },
-            data: data2
+            barMaxWidth: 35,
+            data: [620, 832, 751, 834, 1090, 1130, 1020]
           }
         ]
       };
+      myChart.setOption(options);
+      window.onresize = myChart.resize;
+    },
+    barRender() {
+      var myChart = echarts.init(document.getElementById("echarts2"));
+      var options = {
+        title: {
+          text: "我只是来测试的",
+          x: "left"
+        },
+        xAxis: {
+          splitLine: {
+            show: false
+          },
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        },
+        yAxis: {
+          splitLine: {
+            show: false
+          }
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow"
+          }
+        },
 
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+        grid: {
+          x: "10%",
+          x2: "10%",
+          y: "10%",
+          y2: "10%",
+          borderWidth: 0
+        },
+        series: [
+          {
+            name: "放款",
+            type: "bar",
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "#8ec6ad" },
+                  { offset: 1, color: "#ffe" }
+                ])
+              }
+            },
+            barMaxWidth: 30,
+            data: [320, 532, 1201, 1500, 1390, 730, 420]
+          },
+          {
+            name: "还款",
+            type: "bar",
+
+            markPoint: {
+              data: [{ type: "max", name: "最大值" }]
+            },
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "#d68262" },
+                  { offset: 1, color: "#ffe" }
+                ])
+              }
+            },
+            barMaxWidth: 30,
+            data: [620, 832, 1751, 1334, 1090, 830, 620]
+          }
+        ]
+      };
+      myChart.setOption(options);
+      window.onresize = myChart.resize;
+    },
+    // 饼图渲染
+    piaRender() {
+      var myChart6 = echarts.init(document.getElementById("echarts3"));
+      var option6 = {
+        title: {
+          text: "我只是来测试的",
+          x: "left"
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        calculable: true,
+        series: [
+          {
+            name: "放款",
+            type: "pie",
+            roseType: "radius",
+            data: [
+              { value: 820, name: "Mon" },
+              { value: 932, name: "Tue" },
+              { value: 1001, name: "Wed" },
+              { value: 1134, name: "Thu" },
+              { value: 1090, name: "Fri" },
+              { value: 1330, name: "Sat" },
+              { value: 1420, name: "Sun" }
+            ]
+          }
+        ]
+      };
+      window.onresize = myChart6.resize;
+      myChart6.setOption(option6);
+    },
+    radarRender() {
+      var myChart6 = echarts.init(document.getElementById("echarts4"));
+      var option6 = {
+        title: {
+          text: "我只是来测试的",
+          x: "left"
+        },
+        tooltip: {},
+        radar: {
+          // shape: 'circle',
+          name: {
+            textStyle: {
+              color: "#fff",
+              backgroundColor: "#999",
+              borderRadius: 3,
+              padding: [3, 5]
+            }
+          },
+          indicator: [
+            { name: "Mon", max: 1000 },
+            { name: "Tue", max: 1100 },
+            { name: "Wed", max: 1200 },
+            { name: "Thu", max: 1200 },
+            { name: "Fri", max: 1300 },
+            { name: "Sat", max: 1400 },
+            { name: "Sun", max: 1400 }
+          ]
+        },
+        series: [
+          {
+            name: "放款 vs 还款",
+            type: "radar",
+            // areaStyle: {normal: {}},
+            data: [
+              {
+                value: [820, 932, 901, 934, 1290, 1330, 1320],
+                name: "放款",
+                areaStyle: {
+                  normal: {
+                    opacity: 0.9,
+                    color: new echarts.graphic.RadialGradient(0.5, 0.5, 1, [
+                      {
+                        offset: 0,
+                        color: "#d68262"
+                      },
+                      {
+                        offset: 1,
+                        color: "#ffe"
+                      }
+                    ])
+                  }
+                }
+              },
+              {
+                value: [620, 832, 751, 834, 1090, 1130, 1020],
+                name: "还款",
+                areaStyle: {
+                  normal: {
+                    opacity: 0.9,
+                    color: new echarts.graphic.RadialGradient(0.5, 0.5, 1, [
+                      {
+                        offset: 0,
+                        color: "#8ec6ad"
+                      },
+                      {
+                        offset: 1,
+                        color: "#ffe"
+                      }
+                    ])
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      };
+      window.onresize = myChart6.resize;
+      myChart6.setOption(option6);
     }
   }
 };
