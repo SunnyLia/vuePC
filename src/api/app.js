@@ -26,37 +26,18 @@ app.all('*',function (req, res, next) {
 })
 
 // mock 数据写法
-// 1、首页专题
-app.get('/homeItems', function (req, res) {
+// 选项地址
+app.get('/getAddress', function (req, res) {
     var result = {};
-    result = Mock.mock(jsonData.homeItems);
+    result = Mock.mock(jsonData.listAddress);
     res.end(JSON.stringify(result));
 })
-// 1、首页列表
-app.get('/homeLists', function (req, res) {
+app.get('/getUserLists', function (req, res) {
   var result = {};
-  result = Mock.mock(jsonData.homeLists);
+  result = Mock.mock(jsonData.userLists);
   res.end(JSON.stringify(result));
 })
-// 1、首页TAB 
-app.get('/homeTabs', function (req, res) {
-  var result = {};
-  result = Mock.mock(jsonData.homeTabs);
-  res.end(JSON.stringify(result)); 
-})
-// 1、首页轮播 
-app.get('/carousel', function (req, res) {
-  var result = {};
-  result = Mock.mock(jsonData.carousel);
-  res.end(JSON.stringify(result)); 
-})
-// 2、购物车列表 
-app.get('/cartList', function (req, res) {
-  var result = {};
-  result = Mock.mock(jsonData.cartLists);
-  res.end(JSON.stringify(result)); 
-})
 // 监听3000端口
-const server = app.listen(8080, function () {
-	console.log('listening at =====> http://127.0.0.1:8080...');
+const server = app.listen(8081, function () {
+	console.log('listening at =====> http://127.0.0.1:8081...');
 });

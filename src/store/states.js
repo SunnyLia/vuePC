@@ -1,4 +1,5 @@
 export default {
     navMenus: [],
-    isLogin: false
+    address:[],
+    userLists:[]
 }

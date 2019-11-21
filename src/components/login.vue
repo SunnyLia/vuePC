@@ -48,7 +48,6 @@ export default {
             if(this[formName].account != "admin" && this[formName].pass != "123"){
                 this.$alert('用户名或密码错误了哦~')
             }else{
-                // this.$store.dispatch('getIsLogin')
                 sessionStorage.setItem("user", "admin")
                 this.$router.push({ path: "/" });  
             }
