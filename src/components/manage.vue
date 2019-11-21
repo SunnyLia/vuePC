@@ -1,18 +1,17 @@
 <template>
   <div>
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="审批人">
-        <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+      <el-form-item label="姓名">
+        <el-input v-model="formInline.user" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="活动区域">
-        <el-select v-model="formInline.region" placeholder="活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
+      <el-form-item label="地址">
+        <el-select v-model="formInline.region" placeholder="请选择">
+          <el-option v-for="(v,i) in address" :label="v.province" :value="v.province" :key="i"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="活动时间">
+      <el-form-item label="日期">
         <el-date-picker
-          v-model="formInline.date1"
+          v-model="formInline.date"
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
@@ -29,42 +28,48 @@
       <el-button type="primary" icon="el-icon-edit-outline">编辑</el-button>
     </el-button-group>
     <el-table
-      :data="tableData"
+      :data="userLists"
+      ref="tableRows"
       stripe
       border
       highlight-current-row
-      @current-change="handleCurrentChange1"
+      @row-click="handleSingleChange"
+      @current-change="handleSingleChange1"
+      @selection-change="handleSingleChange2"
+      @select="handleSingleChange3"
       style="width: 100%"
       :cell-style="{'text-align':'center'}"
       :header-cell-style="{'text-align':'center'}"
     >
       <el-table-column type="selection" width="55" fixed></el-table-column>
       <el-table-column type="index" label="序列" :index="indexMethod" width="70"></el-table-column>
-      <el-table-column sortable prop="date" label="日期" width="180"></el-table-column>
       <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+      <el-table-column sortable prop="date" label="日期" width="180"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
+      <el-table-column prop="status" label="状态"></el-table-column>
     </el-table>
     <el-pagination
       background
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="currentPage4"
+      :current-page="currentPage"
       :page-sizes="[10, 15, 20, 50]"
-      :page-size="10"
+      :page-size="currentSize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="400"
+      :total="userLists.length"
       style="text-align: right;margin-top: 10px;"
     ></el-pagination>
   </div>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
       formInline: {
         user: "",
         region: "",
-        date1: ""
+        date: ""
       },
       tableData: [
         {
@@ -103,24 +108,56 @@ export default {
           address: "上海市普陀区金沙江路 1518 弄"
         }
       ],
-      currentPage4: 1
+      currentPage: 1,
+      currentSize: 10,
+      tableRows: []
     };
   },
+  created() {
+    this.$store.dispatch("getAddress");
+    this.$store.dispatch("getUserLists");
+  },
+  computed: mapState(["address", "userLists"]),
   methods: {
     onSubmit() {
-      console.log("submit!");
+      this.$store.dispatch("getUserLists");
     },
     indexMethod(index) {
-      return index * 2;
+      return index + 1;
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.currentSize = val;
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.currentPage = val;
     },
-    handleCurrentChange1(val) {
-      this.currentRow = val;
+    handleSingleChange(val) {
+      this.tableRows.splice(val)
+      console.log(this.tableRows); //对象
+
+      if (this.tableRows) {
+          this.tableRows.forEach(row => {
+            this.$refs.tableRows.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.tableRows.clearSelection();
+        }
+    },
+    handleSingleChange1(val) {
+      // console.log(val); //数组
+      // if (val.length > 0) {
+      //   val.forEach(row => {
+      //     this.$refs.tableRows.setCurrentRow(row);
+      //   });
+      // }
+    },
+    handleSingleChange2(val) {
+      console.log(val);
+      
+    },
+    handleSingleChange3(val) {
+      console.log(val);
+      
     }
   }
 };
