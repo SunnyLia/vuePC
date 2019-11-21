@@ -77,7 +77,7 @@ export default {
   methods: {
     removeS() {
       sessionStorage.removeItem("user");
-      this.$router.push({ path: "/ogin" });
+      this.$router.push({ path: "/login" });
     }
   }
 };
