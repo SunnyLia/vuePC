@@ -23,25 +23,21 @@
       </el-form-item>
     </el-form>
     <el-button-group>
-      <el-button type="primary" icon="el-icon-circle-plus-outline">新增</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="add">新增</el-button>
       <el-button type="primary" icon="el-icon-delete">删除</el-button>
-      <el-button type="primary" icon="el-icon-edit-outline">编辑</el-button>
+      <el-button type="primary" icon="el-icon-edit-outline" @click="edit">编辑</el-button>
     </el-button-group>
     <el-table
       :data="userLists"
-      ref="tableRows"
       stripe
       border
       highlight-current-row
-      @row-click="handleSingleChange"
-      @current-change="handleSingleChange1"
-      @selection-change="handleSingleChange2"
-      @select="handleSingleChange3"
+      @current-change="handleChange"
       style="width: 100%"
       :cell-style="{'text-align':'center'}"
       :header-cell-style="{'text-align':'center'}"
     >
-      <el-table-column type="selection" width="55" fixed></el-table-column>
+      <!-- <el-table-column type="selection" width="55" fixed></el-table-column> -->
       <el-table-column type="index" label="序列" :index="indexMethod" width="70"></el-table-column>
       <el-table-column prop="name" label="姓名" width="180"></el-table-column>
       <el-table-column sortable prop="date" label="日期" width="180"></el-table-column>
@@ -59,10 +55,12 @@
       :total="userLists.length"
       style="text-align: right;margin-top: 10px;"
     ></el-pagination>
+    <Dialog1 :fatInform="tableRows" v-if="dialogVisible" :elOption="address"></Dialog1>
   </div>
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import Dialog1 from "./dialog";
 export default {
   data() {
     return {
@@ -110,7 +108,8 @@ export default {
       ],
       currentPage: 1,
       currentSize: 10,
-      tableRows: []
+      tableRows: null,
+      dialogVisible: false
     };
   },
   created() {
@@ -131,34 +130,24 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
     },
-    handleSingleChange(val) {
-      this.tableRows.splice(val)
-      console.log(this.tableRows); //对象
-
+    handleChange(val) {
+      this.tableRows = val;
+      console.log(this.tableRows);
+      
+    },
+    add() {
+      this.dialogVisible = true;
+    },
+    edit() {
       if (this.tableRows) {
-          this.tableRows.forEach(row => {
-            this.$refs.tableRows.toggleRowSelection(row);
-          });
-        } else {
-          this.$refs.tableRows.clearSelection();
-        }
-    },
-    handleSingleChange1(val) {
-      // console.log(val); //数组
-      // if (val.length > 0) {
-      //   val.forEach(row => {
-      //     this.$refs.tableRows.setCurrentRow(row);
-      //   });
-      // }
-    },
-    handleSingleChange2(val) {
-      console.log(val);
-      
-    },
-    handleSingleChange3(val) {
-      console.log(val);
-      
+        this.dialogVisible = true;
+      }else{
+        alert("请先选择")
+      }
     }
+  },
+  components: {
+    Dialog1
   }
 };
 </script>
