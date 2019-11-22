@@ -1,5 +1,10 @@
 <template>
-  <el-dialog :title="fatInform ? '编辑':'新增'" :visible.sync="dialogFormVisible" width="400px" @close="hidePanel">
+  <el-dialog
+    :title="dialogTitle"
+    :visible.sync="dialogFormVisible"
+    width="400px"
+    @close="hidePanel"
+  >
     <el-form ref="formD1" :model="formD" style="padding-left:40px">
       <el-form-item label="姓名">
         <el-input v-model="formD.name" placeholder="请输入" style="width:217px"></el-input>
@@ -31,20 +36,11 @@ export default {
       }
     };
   },
-  props: ["fatInform", "elOption"],
+  props: ["fatInform", "elOption","dialogTitle"],
   mounted() {
-      console.log(this.fatInform);
-      
-      if(this.fatInform){
-          this.formD = this.fatInform
-      }else{
-          console.log(this.$refs);
-          console.log(this.$refs.dibd);
-          console.log(this.$refs['dibd']);
-          
-        //   this.$refs.formD1.resetFields();
-          
-      }
+    if (this.dialogTitle=="编辑") {
+      this.formD = this.fatInform;
+    } 
   },
   methods: {
     hidePanel() {

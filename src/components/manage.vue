@@ -55,7 +55,7 @@
       :total="userLists.length"
       style="text-align: right;margin-top: 10px;"
     ></el-pagination>
-    <Dialog1 v-show="dialogVisible" :fatInform="tableRows" :elOption="address" @diaShow="add"></Dialog1>
+    <Dialog1 v-if="dialogVisible" :fatInform="tableRows" :elOption="address" @diaShow="add" :dialogTitle="dialogTitle"></Dialog1>
   </div>
 </template>
 <script>
@@ -69,53 +69,18 @@ export default {
         region: "",
         date: ""
       },
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        }
-      ],
       currentPage: 1,
       currentSize: 10,
-      tableRows: null,
-      dialogVisible: false
+      tableRows: null, //选中的行
+      dialogVisible: false,
+      dialogTitle:"新增"
     };
   },
   created() {
     this.$store.dispatch("getAddress");
     this.$store.dispatch("getUserLists");
   },
+  
   computed: mapState(["address", "userLists"]),
   methods: {
     onSubmit() {
@@ -135,11 +100,12 @@ export default {
       this.tableRows = val;
     },
     add() {
+      this.dialogTitle = "新增"
       this.dialogVisible = !this.dialogVisible;
-      this.tableRows=null
     },
     edit() {
       if (this.tableRows) {
+        this.dialogTitle = "编辑"
         this.dialogVisible = true;
       }else{
         alert("请先选择")
