@@ -24,7 +24,7 @@
     </el-form>
     <el-button-group>
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="add">新增</el-button>
-      <el-button type="primary" icon="el-icon-delete">删除</el-button>
+      <el-button type="primary" icon="el-icon-delete" @click="del">删除</el-button>
       <el-button type="primary" icon="el-icon-edit-outline" @click="edit">编辑</el-button>
     </el-button-group>
     <el-table
@@ -110,10 +110,23 @@ export default {
       }else{
         alert("请先选择")
       }
+    },
+    del(){
+      if (this.tableRows) {
+        this.$store.commit("DEL_USER_LISTS",this.tableRows.id)   
+      }else{
+        alert("请先选择")
+      }
     }
   },
   components: {
     Dialog1
+  },
+  watch:{
+    userLists(val){
+      console.log(val);
+      
+    }
   }
 };
 </script>

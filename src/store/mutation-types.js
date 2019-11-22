@@ -1,3 +1,6 @@
 export const NAV_MENUS = 'NAV_MENUS'
 export const ADDRESS = 'ADDRESS'
 export const USER_LISTS = 'USER_LISTS'
+export const DEL_USER_LISTS = 'DEL_USER_LISTS'
+export const ADD_USER_LISTS = 'ADD_USER_LISTS'
+export const EDIT_USER_LISTS = 'EDIT_USER_LISTS'

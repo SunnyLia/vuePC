@@ -20,7 +20,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer" ref="dibd">
       <el-button @click="hidePanel">取 消</el-button>
-      <el-button type="primary" @click="hidePanel">确 定</el-button>
+      <el-button type="primary" @click="confirm">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -39,13 +39,26 @@ export default {
   props: ["fatInform", "elOption","dialogTitle"],
   mounted() {
     if (this.dialogTitle=="编辑") {
-      this.formD = this.fatInform;
+        this.formD = Object.assign({}, this.fatInform);
     } 
   },
   methods: {
     hidePanel() {
       this.dialogFormVisible = !this.dialogFormVisible;
       this.$emit("diaShow");
+    },
+    confirm(){
+        this.formD.date=this.getTime()
+        if(this.dialogTitle == "编辑"){
+            this.$store.commit("EDIT_USER_LISTS",this.formD)            
+        }else{
+            this.$store.commit("ADD_USER_LISTS",this.formD)
+        }
+        this.hidePanel()
+    },
+    getTime(){
+        let date = new Date();
+        return date.toLocaleDateString().replace(new RegExp("/","g"),"-")
     }
   }
 };
