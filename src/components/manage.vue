@@ -55,7 +55,7 @@
       :total="userLists.length"
       style="text-align: right;margin-top: 10px;"
     ></el-pagination>
-    <Dialog1 :fatInform="tableRows" v-if="dialogVisible" :elOption="address"></Dialog1>
+    <Dialog1 v-show="dialogVisible" :fatInform="tableRows" :elOption="address" @diaShow="add"></Dialog1>
   </div>
 </template>
 <script>
@@ -119,6 +119,7 @@ export default {
   computed: mapState(["address", "userLists"]),
   methods: {
     onSubmit() {
+      this.currentPage = 1
       this.$store.dispatch("getUserLists");
     },
     indexMethod(index) {
@@ -132,11 +133,10 @@ export default {
     },
     handleChange(val) {
       this.tableRows = val;
-      console.log(this.tableRows);
-      
     },
     add() {
-      this.dialogVisible = true;
+      this.dialogVisible = !this.dialogVisible;
+      this.tableRows=null
     },
     edit() {
       if (this.tableRows) {

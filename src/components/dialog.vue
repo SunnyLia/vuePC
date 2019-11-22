@@ -1,21 +1,21 @@
 <template>
-  <el-dialog :title="fatInform ? '编辑':'新增'" :visible.sync="dialogFormVisible" width="400px">
-    <el-form :model="formInline" style="padding-left:40px">
+  <el-dialog :title="fatInform ? '编辑':'新增'" :visible.sync="dialogFormVisible" width="400px" @close="hidePanel">
+    <el-form ref="formD1" :model="formD" style="padding-left:40px">
       <el-form-item label="姓名">
-        <el-input v-model="formInline.user" placeholder="请输入" style="width:217px"></el-input>
+        <el-input v-model="formD.name" placeholder="请输入" style="width:217px"></el-input>
       </el-form-item>
       <el-form-item label="地址">
-        <el-select v-model="formInline.region" placeholder="请选择">
+        <el-select v-model="formD.address" placeholder="请选择">
           <el-option v-for="(v,i) in elOption" :label="v.province" :value="v.province" :key="i"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="发布">
-        <el-switch v-model="formInline.status"></el-switch>
+        <el-switch v-model="formD.status" active-value="1" inactive-value="0"></el-switch>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+    <div slot="footer" class="dialog-footer" ref="dibd">
+      <el-button @click="hidePanel">取 消</el-button>
+      <el-button type="primary" @click="hidePanel">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -24,16 +24,33 @@ export default {
   data() {
     return {
       dialogFormVisible: true,
-      formInline: {
-        user: "",
-        region: "",
-        status: false
+      formD: {
+        name: "",
+        address: "",
+        status: "0"
       }
     };
   },
-  props:["fatInform","elOption"],
-  mounted(){
+  props: ["fatInform", "elOption"],
+  mounted() {
+      console.log(this.fatInform);
       
+      if(this.fatInform){
+          this.formD = this.fatInform
+      }else{
+          console.log(this.$refs);
+          console.log(this.$refs.dibd);
+          console.log(this.$refs['dibd']);
+          
+        //   this.$refs.formD1.resetFields();
+          
+      }
+  },
+  methods: {
+    hidePanel() {
+      this.dialogFormVisible = !this.dialogFormVisible;
+      this.$emit("diaShow");
+    }
   }
 };
 </script>

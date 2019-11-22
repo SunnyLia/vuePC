@@ -19,7 +19,7 @@ module.exports = {
 			"name":"@cname",
 			"address":"@county(true)",
 			"date":"@date",
-			"status|0-1":1
+			"status|1":["0","1"]
 		}]
 	}
  }
