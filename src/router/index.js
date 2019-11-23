@@ -4,6 +4,8 @@ import Home from '@/components/home'
 import Login from '@/components/login'
 import Dashboard from '@/components/dashboard'
 import User from '@/components/userList'
+import Editor from '@/components/editor'
+import Upload from '@/components/uploader'
 import VueRouter from "vue-router";
 
 // 解决两次访问相同路由地址报错
@@ -29,11 +31,11 @@ export default new Router({
       },
       {
         path: '/editor',
-        component: User
+        component: Editor
       },
       {
-        path: '/lists',
-        component: User
+        path: '/uploader',
+        component: Upload
       }
     ]
   }, {

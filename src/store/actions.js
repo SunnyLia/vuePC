@@ -18,15 +18,15 @@ const menus = [
                 listItems: []
             },
             {
-                listName: "记录列表",
-                url: "/lists",
+                listName: "工具处理",
+                url: "",
                 listItems: [{
-                    itemName: "列表中心",
-                    url: ""
+                    itemName: "上传中心",
+                    url: "/uploader"
                 },
                 {
                     itemName: "编辑中心",
-                    url: ""
+                    url: "/editor"
                 }]
             }
         ]
