@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="姓名">
+    <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+      <el-form-item label="姓名" prop="user">
         <el-input v-model="formInline.user" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="地址">
+      <el-form-item label="地址" prop="region">
         <el-select v-model="formInline.region" placeholder="请选择">
           <el-option v-for="(v,i) in address" :label="v.province" :value="v.province" :key="i"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="日期">
+      <el-form-item label="日期" prop="date">
         <el-date-picker
           v-model="formInline.date"
           type="daterange"
@@ -19,7 +19,8 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="onSubmit">筛选</el-button>
+        <el-button @click="reset('formInline')">重置</el-button>
       </el-form-item>
     </el-form>
     <el-button-group>
@@ -88,16 +89,16 @@ export default {
       dialogTitle: "新增"
     };
   },
-  created() {    
+  created() {
     this.$store.dispatch("getAddress");
-    this.$store.dispatch("getUserLists",JSON.stringify(this.formInline));
+    this.$store.dispatch("getUserLists");
   },
 
   computed: mapState(["address", "userLists"]),
   methods: {
     onSubmit() {
       this.formInline.currentPage = 1;
-      this.$store.dispatch("getUserLists",JSON.stringify(this.formInline));
+      this.$store.dispatch("getUserLists", JSON.stringify(this.formInline));
     },
     indexMethod(index) {
       return index + 1;
@@ -136,6 +137,9 @@ export default {
       } else {
         this.$message("请先选择");
       }
+    },
+    reset(formName) {
+      this.$refs[formName].resetFields();
     }
   },
   components: {

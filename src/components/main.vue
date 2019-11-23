@@ -7,21 +7,21 @@
         </el-card>
       </el-col>
       <el-col :span="8">
-        <div class="grid-content bg-purple">
+        <el-card class="box-card">
           <div id="echarts3" style="height:500px"></div>
-        </div>
+        </el-card>
       </el-col>
     </el-row>
-    <el-row :gutter="20">
+    <el-row :gutter="20" style="margin-top:20px">
       <el-col :span="16">
         <el-card class="box-card">
           <div id="echarts2" style="height:500px"></div>
         </el-card>
       </el-col>
       <el-col :span="8">
-        <div class="grid-content bg-purple">
+        <el-card class="box-card">
           <div id="echarts4" style="height:500px"></div>
-        </div>
+        </el-card>
       </el-col>
     </el-row>
   </div>
