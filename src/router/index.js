@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/home'
 import Login from '@/components/login'
-import Main from '@/components/main'
-import Manage from '@/components/manage'
+import Dashboard from '@/components/dashboard'
+import User from '@/components/userList'
 import VueRouter from "vue-router";
 
 // 解决两次访问相同路由地址报错
@@ -17,23 +17,23 @@ export default new Router({
   routes: [{
     path: '/',
     component: Home,
-    redirect: '/main',
+    redirect: '/dashboard',
     children: [
       {
-        path: '/main',
-        component: Main
+        path: '/dashboard',
+        component: Dashboard
       },
       {
-        path: '/manage',
-        component: Manage
+        path: '/user',
+        component: User
       },
       {
-        path: '/news',
-        component: Manage
+        path: '/editor',
+        component: User
       },
       {
         path: '/lists',
-        component: Manage
+        component: User
       }
     ]
   }, {

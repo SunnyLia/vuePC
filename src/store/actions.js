@@ -5,7 +5,7 @@ const menus = [
     {
         title: "首页",
         lists: [],
-        url: "/main",
+        url: "/dashboard",
         icon:"el-icon-menu"
     }, {
         title: "内容管理",
@@ -13,19 +13,19 @@ const menus = [
         icon:"el-icon-tickets",
         lists: [
             {
-                listName: "消息中心",
-                url: "/manage",
+                listName: "客户查询",
+                url: "/user",
                 listItems: []
             },
             {
-                listName: "列表中心",
+                listName: "记录列表",
                 url: "/lists",
                 listItems: [{
-                    itemName: "记录列表",
+                    itemName: "列表中心",
                     url: ""
                 },
                 {
-                    itemName: "客户查询",
+                    itemName: "编辑中心",
                     url: ""
                 }]
             }
