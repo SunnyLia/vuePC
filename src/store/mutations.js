@@ -24,5 +24,28 @@ export default {
             }
             return item
         })
-    }
+    },
+    [types.FILTER_QUERY](state, result) {//筛选
+        let { user, region, date, currentPage, currentSize } = result;
+        var queryList = state.userLists;
+        // state.userLists = result.lists.map((item) => {
+        if (user != "") { //筛选姓名
+            queryList = queryList.filter((item) => {
+                return item.name == user
+            })
+        }
+        if (region != "") { //筛选地址
+            queryList = queryList.filter((item) => {
+                return item.address.indexOf(region) != -1
+            })
+        }
+        if (date != "") { //筛选日期
+            queryList = queryList.filter((item) => {
+                let dateItem = (new Date(item.date + " 00:00:00")).getTime();               
+                return (date[0].getTime() <= dateItem) && (dateItem <= date[1].getTime())
+            })
+        }
+        state.filterQuery = queryList
+        // })
+    },
 }

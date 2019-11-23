@@ -29,7 +29,7 @@
       <el-button type="primary" icon="el-icon-edit-outline" @click="edit">编辑</el-button>
     </el-button-group>
     <el-table
-      :data="userLists"
+      :data="queryUserList"
       stripe
       border
       highlight-current-row
@@ -38,7 +38,6 @@
       :cell-style="{'text-align':'center'}"
       :header-cell-style="{'text-align':'center'}"
     >
-      <!-- <el-table-column type="selection" width="55" fixed></el-table-column> -->
       <el-table-column type="index" label="序列" :index="indexMethod" width="70"></el-table-column>
       <el-table-column prop="name" label="姓名"></el-table-column>
       <el-table-column sortable prop="date" label="日期"></el-table-column>
@@ -46,7 +45,7 @@
       <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
           <el-tag size="medium" v-if="scope.row.status==1">发布</el-tag>
-          <el-tag size="medium" v-else>未发布</el-tag>
+          <el-tag type="info" size="medium" v-else>未发布</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -58,7 +57,7 @@
       :page-sizes="[10, 15, 20, 50]"
       :page-size="formInline.currentSize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="userLists.length"
+      :total="queryUserList.length"
       style="text-align: right;margin-top: 10px;"
     ></el-pagination>
     <Dialog1
@@ -83,7 +82,7 @@ export default {
         currentPage: 1,
         currentSize: 10
       },
-
+      queryUserList:[],
       tableRows: null, //选中的行
       dialogVisible: false,
       dialogTitle: "新增"
@@ -93,12 +92,19 @@ export default {
     this.$store.dispatch("getAddress");
     this.$store.dispatch("getUserLists");
   },
-
-  computed: mapState(["address", "userLists"]),
+  computed: mapState(["address", "userLists","filterQuery"]),
+  watch:{
+    userLists(val){
+      this.queryUserList=val;
+    },
+    filterQuery(val){
+      this.queryUserList=val;
+    },
+  },
   methods: {
     onSubmit() {
       this.formInline.currentPage = 1;
-      this.$store.dispatch("getUserLists", JSON.stringify(this.formInline));
+      this.$store.commit("FILTER_QUERY", this.formInline);
     },
     indexMethod(index) {
       return index + 1;
@@ -140,16 +146,12 @@ export default {
     },
     reset(formName) {
       this.$refs[formName].resetFields();
+      this.queryUserList=this.userLists;
     }
   },
   components: {
     Dialog1
   }
-  // watch:{
-  //   userLists(val){
-
-  //   }
-  // }
 };
 </script>
 <style scoped>
