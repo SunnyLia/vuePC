@@ -39,8 +39,8 @@
     >
       <!-- <el-table-column type="selection" width="55" fixed></el-table-column> -->
       <el-table-column type="index" label="序列" :index="indexMethod" width="70"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-      <el-table-column sortable prop="date" label="日期" width="180"></el-table-column>
+      <el-table-column prop="name" label="姓名"></el-table-column>
+      <el-table-column sortable prop="date" label="日期"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
       <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
@@ -53,9 +53,9 @@
       background
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="currentPage"
+      :current-page="formInline.currentPage"
       :page-sizes="[10, 15, 20, 50]"
-      :page-size="currentSize"
+      :page-size="formInline.currentSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="userLists.length"
       style="text-align: right;margin-top: 10px;"
@@ -78,34 +78,35 @@ export default {
       formInline: {
         user: "",
         region: "",
-        date: ""
+        date: "",
+        currentPage: 1,
+        currentSize: 10
       },
-      currentPage: 1,
-      currentSize: 10,
+
       tableRows: null, //选中的行
       dialogVisible: false,
       dialogTitle: "新增"
     };
   },
-  created() {
+  created() {    
     this.$store.dispatch("getAddress");
-    this.$store.dispatch("getUserLists");
+    this.$store.dispatch("getUserLists",JSON.stringify(this.formInline));
   },
 
   computed: mapState(["address", "userLists"]),
   methods: {
     onSubmit() {
-      this.currentPage = 1;
-      this.$store.dispatch("getUserLists");
+      this.formInline.currentPage = 1;
+      this.$store.dispatch("getUserLists",JSON.stringify(this.formInline));
     },
     indexMethod(index) {
       return index + 1;
     },
     handleSizeChange(val) {
-      this.currentSize = val;
+      this.formInline.currentSize = val;
     },
     handleCurrentChange(val) {
-      this.currentPage = val;
+      this.formInline.currentPage = val;
     },
     handleChange(val) {
       this.tableRows = val;

@@ -47,8 +47,8 @@ export default {
             console.log('请求错误了')
         })
     },
-    getUserLists({ commit, state }) {
-        axios.get(url+"/getUserLists")
+    getUserLists({ commit, state },params) {
+        axios.get(url+"/getUserLists?data="+params)
         .then(function(result) {
             if (result.data.code == "200") {
                 commit(types.USER_LISTS, result.data.data)
