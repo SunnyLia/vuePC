@@ -42,7 +42,12 @@
       <el-table-column prop="name" label="姓名" width="180"></el-table-column>
       <el-table-column sortable prop="date" label="日期" width="180"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
-      <el-table-column prop="status" label="状态"></el-table-column>
+      <el-table-column prop="status" label="状态">
+        <template slot-scope="scope">
+          <el-tag size="medium" v-if="scope.row.status==1">发布</el-tag>
+          <el-tag size="medium" v-else>未发布</el-tag>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       background
@@ -55,7 +60,13 @@
       :total="userLists.length"
       style="text-align: right;margin-top: 10px;"
     ></el-pagination>
-    <Dialog1 v-if="dialogVisible" :fatInform="tableRows" :elOption="address" @diaShow="add" :dialogTitle="dialogTitle"></Dialog1>
+    <Dialog1
+      v-if="dialogVisible"
+      :fatInform="tableRows"
+      :elOption="address"
+      @diaShow="add"
+      :dialogTitle="dialogTitle"
+    ></Dialog1>
   </div>
 </template>
 <script>
@@ -73,18 +84,18 @@ export default {
       currentSize: 10,
       tableRows: null, //选中的行
       dialogVisible: false,
-      dialogTitle:"新增"
+      dialogTitle: "新增"
     };
   },
   created() {
     this.$store.dispatch("getAddress");
     this.$store.dispatch("getUserLists");
   },
-  
+
   computed: mapState(["address", "userLists"]),
   methods: {
     onSubmit() {
-      this.currentPage = 1
+      this.currentPage = 1;
       this.$store.dispatch("getUserLists");
     },
     indexMethod(index) {
@@ -100,34 +111,40 @@ export default {
       this.tableRows = val;
     },
     add() {
-      this.dialogTitle = "新增"
+      this.dialogTitle = "新增";
       this.dialogVisible = !this.dialogVisible;
     },
     edit() {
       if (this.tableRows) {
-        this.dialogTitle = "编辑"
+        this.dialogTitle = "编辑";
         this.dialogVisible = true;
-      }else{
-        alert("请先选择")
+      } else {
+        this.$message("请先选择");
       }
     },
-    del(){
+    del() {
       if (this.tableRows) {
-        this.$store.commit("DEL_USER_LISTS",this.tableRows.id)   
-      }else{
-        alert("请先选择")
+        this.$confirm("确定要删除该条数据?", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消"
+        })
+          .then(() => {
+            this.$store.commit("DEL_USER_LISTS", this.tableRows.id);
+          })
+          .catch(() => {});
+      } else {
+        this.$message("请先选择");
       }
     }
   },
   components: {
     Dialog1
-  },
-  watch:{
-    userLists(val){
-      console.log(val);
-      
-    }
   }
+  // watch:{
+  //   userLists(val){
+
+  //   }
+  // }
 };
 </script>
 <style scoped>
