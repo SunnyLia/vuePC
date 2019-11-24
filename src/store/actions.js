@@ -3,30 +3,30 @@ import axios from 'axios';
 const url="http://127.0.0.1:8081"
 const menus = [
     {
-        title: "首页",
-        lists: [],
-        url: "/dashboard",
+        name: "首页",
+        children: [],
+        path: "/dashboard",
         icon:"el-icon-menu"
     }, {
-        title: "内容管理",
-        url: "",
+        name: "内容管理",
+        path: "",
         icon:"el-icon-tickets",
-        lists: [
+        children: [
             {
-                listName: "客户查询",
-                url: "/user",
-                listItems: []
+                name: "客户查询",
+                path: "/user",
+                children: []
             },
             {
-                listName: "工具处理",
-                url: "",
-                listItems: [{
-                    itemName: "上传中心",
-                    url: "/uploader"
+                name: "工具处理",
+                path: "",
+                children: [{
+                    name: "上传中心",
+                    path: "/uploader"
                 },
                 {
-                    itemName: "编辑中心",
-                    url: "/editor"
+                    name: "编辑中心",
+                    path: "/editor"
                 }]
             }
         ]

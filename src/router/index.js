@@ -23,19 +23,31 @@ export default new Router({
     children: [
       {
         path: '/dashboard',
-        component: Dashboard
+        component: Dashboard,
+        meta:{
+          title:'首页'
+        }
       },
       {
         path: '/user',
-        component: User
+        component: User,
+        meta:{
+          title:'客户查询'
+        }
       },
       {
         path: '/editor',
-        component: Editor
+        component: Editor,
+        meta:{
+          title:'编辑中心'
+        }
       },
       {
         path: '/uploader',
-        component: Upload
+        component: Upload,
+        meta:{
+          title:'上传中心'
+        }
       }
     ]
   }, {
