@@ -28,6 +28,9 @@
       <el-button type="primary" icon="el-icon-delete" @click="del">删除</el-button>
       <el-button type="primary" icon="el-icon-edit-outline" @click="edit">编辑</el-button>
     </el-button-group>
+    <el-button-group style="float:right">
+      <el-button type="primary" icon="el-icon-download" @click="excel">导出</el-button>
+    </el-button-group>
     <el-table
       :data="queryUserList"
       stripe
@@ -44,7 +47,7 @@
       <el-table-column prop="address" label="地址"></el-table-column>
       <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
-          <el-tag size="medium" v-if="scope.row.status==1">发布</el-tag>
+          <el-tag size="medium" v-if="scope.row.status==1">已发布</el-tag>
           <el-tag type="info" size="medium" v-else>未发布</el-tag>
         </template>
       </el-table-column>
@@ -72,6 +75,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import Dialog1 from "./dialog";
+import { tableToExcel } from "./comJs";
 export default {
   data() {
     return {
@@ -102,6 +106,16 @@ export default {
     },
   },
   methods: {
+    excel(){
+      let lists = this.userLists
+      lists.unshift({
+        name:"姓名",
+        date:'日期',
+        address:'地址',
+        status:'状态'
+      })
+      tableToExcel(lists);
+    },
     onSubmit() {
       this.formInline.currentPage = 1;
       this.$store.commit("FILTER_QUERY", this.formInline);

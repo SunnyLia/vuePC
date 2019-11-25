@@ -58,7 +58,7 @@
                     @tab-remove="removeTab"
                     @tab-click="tab=>this.$router.push({path: tab.name})">
                     <el-tab-pane
-                        v-for="(item, index) in editableTabs"
+                        v-for="(item) in editableTabs"
                         :key="item.name"
                         :closable="item.close" 
                         :label="item.title"
