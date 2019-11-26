@@ -1,6 +1,8 @@
 <template>
-  <div class="tinymce">
+  <div>
     <Editor id="tinymce" v-model="tinymceHtml" :init="init"></Editor>
+    <el-button type="primary">保存</el-button>
+    <el-button @click="tinymceHtml=''">清空</el-button>
   </div>
 </template>
 
@@ -37,6 +39,7 @@ import "tinymce/plugins/nonbreaking";
 import "tinymce/plugins/autosave";
 import "tinymce/plugins/fullpage";
 import "tinymce/plugins/toc";
+import "tinymce/plugins/emoticons"; //插入表情插件
 
 export default {
   data() {
@@ -47,6 +50,7 @@ export default {
         language: "zh_CN", //语言设置
         //disabled:true, //禁用
         skin_url: "/static/tinymce/skins/ui/oxide", //主题样式
+        emoticons_database_url: "/static/tinymce/emoticons/emojis.js",
         height: 500, //高度
         menubar: false, // 隐藏最上方menu菜单
         toolbar: true, // 隐藏工具栏
@@ -54,10 +58,10 @@ export default {
         statusbar: true, // 隐藏编辑器底部的状态栏
         elementpath: false, //隐藏底栏的元素路径
         plugins:
-          "lists image media table wordcount code fullscreen help  toc fullpage autosave nonbreaking insertdatetime visualchars visualblocks searchreplace spellchecker pagebreak link charmap paste print preview hr anchor",
+          "lists image media table wordcount code fullscreen help  toc fullpage autosave nonbreaking insertdatetime visualchars visualblocks searchreplace spellchecker pagebreak link charmap paste print preview hr anchor emoticons",
         toolbar: [
           "newdocument undo redo | formatselect visualaid|cut copy paste selectall| bold italic underline strikethrough |codeformat blockformats| superscript subscript  | forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent |  removeformat ",
-          "code  bullist numlist | lists image media table link |fullscreen help toc fullpage restoredraft nonbreaking insertdatetime visualchars visualblocks searchreplace spellchecker pagebreak anchor charmap  pastetext print preview hr"
+          "code  bullist numlist | lists image media table link |fullscreen help toc fullpage restoredraft nonbreaking insertdatetime visualchars visualblocks searchreplace spellchecker pagebreak anchor charmap  pastetext print preview hr emoticons"
         ],
         images_upload_handler: function(blobInfo, succFun, failFun) {
           var xhr, formData;
@@ -78,7 +82,7 @@ export default {
             succFun(json.files.file);
           };
           formData = new FormData();
-          formData.append('file', blobInfo.blob(), blobInfo.filename());
+          formData.append("file", blobInfo.blob(), blobInfo.filename());
           xhr.send(formData);
         },
         file_picker_callback: function(callback, value, meta) {
@@ -93,7 +97,7 @@ export default {
               var blobCache = tinymce.activeEditor.editorUpload.blobCache;
               var base64 = reader.result.split(",")[1];
               var blobInfo = blobCache.create(id, file, base64);
-              blobCache.add(blobInfo);             
+              blobCache.add(blobInfo);
               callback(blobInfo.blobUri(), { text: file.name });
             };
             reader.readAsDataURL(file);
@@ -108,7 +112,6 @@ export default {
   components: {
     Editor
   },
-
   mounted() {
     tinymce.init({});
   }
