@@ -45,26 +45,24 @@
 
     <el-container>
       <el-header class="conHeader">
-        <transition name="turn">
-          <div style="float:left;margin-top: 8px;cursor: pointer;" @click="isCollapse=!isCollapse">
-            <svg
-              t="1574762957718"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="1906"
-              width="23"
-              height="23"
-            >
-              <path
-                d="M914.4 674.9H394.7c-25.2 0-45.6-22-45.6-48.9s20.4-48.9 45.6-48.9h519.7c25.2 0 45.6 22 45.6 48.9s-20.4 48.9-45.6 48.9z m0-228.1H394.7c-25.2 0-45.6-22-45.6-48.9s20.4-48.9 45.6-48.9h519.7c25.2 0 45.6 22 45.6 48.9s-20.4 48.9-45.6 48.9z m-3.3-219.9H115.3c-26.9 0-50.5-20.4-51.3-47.2-0.8-27.7 21.2-50.5 48.9-50.5h795.8c26.9 0 50.5 20.4 51.3 47.2 0.8 27.7-21.2 50.5-48.9 50.5zM291.3 674.1V349.9L64 512l227.3 162.1c0 0.8 0 0.8 0 0z m-178.4 123h795.8c26.9 0 50.5 20.4 51.3 47.2 0.8 27.7-21.2 50.5-48.9 50.5H115.3c-26.9 0-50.5-20.4-51.3-47.2-0.8-27.7 21.2-50.5 48.9-50.5z"
-                p-id="1907"
-                fill="#909399"
-              />
-            </svg>
-          </div>
-        </transition>
+        <div style="float:left;margin-top: 8px;cursor: pointer;" @click="isCollapse=!isCollapse">
+          <svg
+            t="1574762957718"
+            :class="['icon',{'turn180d':isCollapse}]"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="1906"
+            width="23"
+            height="23"
+          >
+            <path
+              d="M914.4 674.9H394.7c-25.2 0-45.6-22-45.6-48.9s20.4-48.9 45.6-48.9h519.7c25.2 0 45.6 22 45.6 48.9s-20.4 48.9-45.6 48.9z m0-228.1H394.7c-25.2 0-45.6-22-45.6-48.9s20.4-48.9 45.6-48.9h519.7c25.2 0 45.6 22 45.6 48.9s-20.4 48.9-45.6 48.9z m-3.3-219.9H115.3c-26.9 0-50.5-20.4-51.3-47.2-0.8-27.7 21.2-50.5 48.9-50.5h795.8c26.9 0 50.5 20.4 51.3 47.2 0.8 27.7-21.2 50.5-48.9 50.5zM291.3 674.1V349.9L64 512l227.3 162.1c0 0.8 0 0.8 0 0z m-178.4 123h795.8c26.9 0 50.5 20.4 51.3 47.2 0.8 27.7-21.2 50.5-48.9 50.5H115.3c-26.9 0-50.5-20.4-51.3-47.2-0.8-27.7 21.2-50.5 48.9-50.5z"
+              p-id="1907"
+              fill="#909399"
+            />
+          </svg>
+        </div>
         <div style="text-align: right;">
           <span>欢迎！张张你大爷</span>
           <el-dropdown>
@@ -120,10 +118,11 @@ export default {
     const that = this;
     window.onresize = () => {
       return (() => {
-        window.screenWidth = document.body.clientWidth;
-        that.screenWidth = window.screenWidth;
-        console.log(that.screenWidth);
-        console.log(that._isMobile());
+        if(document.body.clientWidth < 992){
+          that.isCollapse = true
+        }else{
+          that.isCollapse = false
+        }
       })();
     };
   },
@@ -178,21 +177,7 @@ export default {
 .aside64 {
   width: 64px !important;
 }
-.turn-enter-active {
-  animation: turn-in .5s;
-}
-.turn-leave-active {
-  animation: turn-in .5s reverse;
-}
-@keyframes turn-in {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(90deg);
-  }
-  100% {
-    transform: rotate(180deg);
-  }
+.turn180d{
+  transform: rotate(180deg);
 }
 </style>
