@@ -75,7 +75,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import Dialog1 from "./dialog";
-import { tableToExcel } from "./comJs";
+import { tableToExcel } from "../assets/comJs";
 export default {
   data() {
     return {
