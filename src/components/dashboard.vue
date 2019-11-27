@@ -30,15 +30,26 @@
 import echarts from "echarts";
 export default {
   mounted() {
-    this.lineRender();
-    this.barRender();
-    this.piaRender();
-    this.radarRender();
+    var myChart1 = echarts.init(document.getElementById("echarts1"));
+    myChart1.setOption(this.lineRender());
+    var myChart2 = echarts.init(document.getElementById("echarts2"));
+    myChart2.setOption(this.barRender());
+    var myChart3 = echarts.init(document.getElementById("echarts3"));
+    myChart3.setOption(this.piaRender());
+    var myChart4 = echarts.init(document.getElementById("echarts4"));
+    myChart4.setOption(this.radarRender());
+    setTimeout(function() {
+      window.onresize = function() {
+        myChart1.resize();
+        myChart2.resize();
+        myChart3.resize();
+        myChart4.resize();
+      };
+    });
   },
   methods: {
     // 柱状折线渲染
     lineRender() {
-      var myChart = echarts.init(document.getElementById("echarts1"));
       var options = {
         title: {
           text: "我只是来测试的",
@@ -123,15 +134,13 @@ export default {
               }
             },
             barMaxWidth: 35,
-            data: [620, 832, 751, 834, 1090, 1130, 1020]
+            data: [620, 732, 701, 834, 1090, 1130, 1020]
           }
         ]
       };
-      myChart.setOption(options);
-      window.onresize = myChart.resize;
+      return options;
     },
     barRender() {
-      var myChart = echarts.init(document.getElementById("echarts2"));
       var options = {
         title: {
           text: "我只是来测试的",
@@ -197,13 +206,11 @@ export default {
           }
         ]
       };
-      myChart.setOption(options);
-      window.onresize = myChart.resize;
+      return options;
     },
     // 饼图渲染
     piaRender() {
-      var myChart6 = echarts.init(document.getElementById("echarts3"));
-      var option6 = {
+      var options = {
         title: {
           text: "我只是来测试的",
           x: "left"
@@ -230,12 +237,10 @@ export default {
           }
         ]
       };
-      window.onresize = myChart6.resize;
-      myChart6.setOption(option6);
+      return options;
     },
     radarRender() {
-      var myChart6 = echarts.init(document.getElementById("echarts4"));
-      var option6 = {
+      var options = {
         title: {
           text: "我只是来测试的",
           x: "left"
@@ -287,7 +292,7 @@ export default {
                 }
               },
               {
-                value: [620, 832, 751, 834, 1090, 1130, 1020],
+                value: [620, 732, 751, 834, 1090, 1130, 1020],
                 name: "还款",
                 areaStyle: {
                   normal: {
@@ -309,8 +314,7 @@ export default {
           }
         ]
       };
-      window.onresize = myChart6.resize;
-      myChart6.setOption(option6);
+      return options;
     }
   }
 };
