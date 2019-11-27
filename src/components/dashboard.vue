@@ -29,6 +29,11 @@
 <script>
 import echarts from "echarts";
 export default {
+   data() {
+    return {
+      timer: null
+    }
+  },
   mounted() {
     var myChart1 = echarts.init(document.getElementById("echarts1"));
     myChart1.setOption(this.lineRender());
@@ -38,7 +43,7 @@ export default {
     myChart3.setOption(this.piaRender());
     var myChart4 = echarts.init(document.getElementById("echarts4"));
     myChart4.setOption(this.radarRender());
-    setTimeout(function() {
+    this.timer = setTimeout(function() {
       window.onresize = function() {
         myChart1.resize();
         myChart2.resize();
@@ -46,6 +51,9 @@ export default {
         myChart4.resize();
       };
     });
+  },
+  beforeDestroy() {
+    clearTimeout(this.timer)
   },
   methods: {
     // 柱状折线渲染
