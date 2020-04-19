@@ -15,12 +15,12 @@
     <el-row :gutter="20" style="margin-top:20px">
       <el-col :span="16">
         <el-card class="box-card">
-          <div id="echarts2" style="height:500px"></div>
+          <div id="echarts1" style="height:500px"></div>
         </el-card>
       </el-col>
       <el-col :span="8">
         <el-card class="box-card">
-          <div id="echarts4" style="height:500px"></div>
+          <div id="echarts3" style="height:500px"></div>
         </el-card>
       </el-col>
     </el-row>

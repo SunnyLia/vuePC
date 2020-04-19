@@ -1,4 +1,6 @@
-
+/**
+ *  导出表格
+ */
 export function tableToExcel(jsonData) {
     let str = '';
     //循环遍历，每行加入tr标签，每个单元格加td标签
@@ -27,7 +29,26 @@ export function tableToExcel(jsonData) {
     window.location.href = uri + base64(template)
 }
 //输出base64编码
-function base64(s) {
+const base64 = (s) => {
     return window.btoa(unescape(encodeURIComponent(s)))
 }
 
+/**
+ * 格式化日期
+ */
+export function formatDate(datetime) {
+    var t = new Date(datetime);//row 表示一行数据, updateTime 表示要格式化的字段名称
+    var year = t.getFullYear(),
+        month = t.getMonth() + 1,
+        day = t.getDate(),
+        hour = t.getHours(),
+        min = t.getMinutes(),
+        sec = t.getSeconds();
+    var newTime = year + '-' +
+        (month < 10 ? '0' + month : month) + '-' +
+        (day < 10 ? '0' + day : day) + ' ' +
+        (hour < 10 ? '0' + hour : hour) + ':' +
+        (min < 10 ? '0' + min : min) + ':' +
+        (sec < 10 ? '0' + sec : sec);
+    return newTime;
+}

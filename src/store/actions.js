@@ -1,21 +1,26 @@
 import * as types from './mutation-types.js'
 
 import axios from 'axios';
-const url="http://127.0.0.1:8081"
+const url = "http://127.0.0.1:8081"
 const menus = [
     {
         name: "首页",
         children: [],
         path: "/dashboard",
-        icon:"el-icon-menu"
+        icon: "el-icon-menu"
     }, {
         name: "内容管理",
         path: "",
-        icon:"el-icon-tickets",
+        icon: "el-icon-tickets",
         children: [
             {
                 name: "客户查询",
                 path: "/user",
+                children: []
+            },
+            {
+                name: "事务查询",
+                path: "/thing",
                 children: []
             },
             {
@@ -31,6 +36,11 @@ const menus = [
                 }]
             }
         ]
+    }, {
+        name: "测试",
+        children: [],
+        path: "/test",
+        icon: "el-icon-edit"
     }
 ]
 export default {
@@ -38,25 +48,25 @@ export default {
         commit(types.NAV_MENUS, menus)
     },
     getAddress({ commit, state }) {
-        axios.get(url+"/getAddress")
-        .then(function(result) {
-            if (result.data.code == "200") {
-                commit(types.ADDRESS, result.data.data)
-            }
-        })
-        .catch(function(result) {
-            console.log('请求错误了')
-        })
+        axios.get(url + "/getAddress")
+            .then(function (result) {
+                if (result.data.code == "200") {
+                    commit(types.ADDRESS, result.data.data)
+                }
+            })
+            .catch(function (result) {
+                console.log('请求错误了')
+            })
     },
     getUserLists({ commit, state }) {
-        axios.get(url+"/getUserLists")
-        .then(function(result) {
-            if (result.data.code == "200") {
-                commit(types.USER_LISTS, result.data.data)
-            }
-        })
-        .catch(function(result) {
-            console.log('请求错误了')
-        })
+        axios.get(url + "/getUserLists")
+            .then(function (result) {
+                if (result.data.code == "200") {
+                    commit(types.USER_LISTS, result.data.data)
+                }
+            })
+            .catch(function (result) {
+                console.log('请求错误了')
+            })
     }
 }

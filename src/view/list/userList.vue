@@ -41,6 +41,7 @@
       :cell-style="{'text-align':'center'}"
       :header-cell-style="{'text-align':'center'}"
     >
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="index" label="序列" :index="indexMethod" width="70"></el-table-column>
       <el-table-column prop="name" label="姓名"></el-table-column>
       <el-table-column sortable prop="date" label="日期"></el-table-column>
@@ -74,8 +75,8 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
-import Dialog1 from "./dialog";
-import { tableToExcel } from "../assets/comJs";
+import Dialog1 from "@/components/dialog";
+import { tableToExcel } from "@/assets/comJs";
 export default {
   data() {
     return {
@@ -86,7 +87,7 @@ export default {
         currentPage: 1,
         currentSize: 10
       },
-      queryUserList:[],
+      queryUserList: [],
       tableRows: null, //选中的行
       dialogVisible: false,
       dialogTitle: "新增"
@@ -96,24 +97,24 @@ export default {
     this.$store.dispatch("getAddress");
     this.$store.dispatch("getUserLists");
   },
-  computed: mapState(["address", "userLists","filterQuery"]),
-  watch:{
-    userLists(val){
-      this.queryUserList=val;
+  computed: mapState(["address", "userLists", "filterQuery"]),
+  watch: {
+    userLists(val) {
+      this.queryUserList = val;
     },
-    filterQuery(val){
-      this.queryUserList=val;
-    },
+    filterQuery(val) {
+      this.queryUserList = val;
+    }
   },
   methods: {
-    excel(){
-      let lists = this.userLists
+    excel() {
+      let lists = this.userLists;
       lists.unshift({
-        name:"姓名",
-        date:'日期',
-        address:'地址',
-        status:'状态'
-      })
+        name: "姓名",
+        date: "日期",
+        address: "地址",
+        status: "状态"
+      });
       tableToExcel(lists);
     },
     onSubmit() {
@@ -160,7 +161,7 @@ export default {
     },
     reset(formName) {
       this.$refs[formName].resetFields();
-      this.queryUserList=this.userLists;
+      this.queryUserList = this.userLists;
     }
   },
   components: {

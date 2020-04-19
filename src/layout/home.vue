@@ -45,23 +45,41 @@
 
     <el-container>
       <el-header class="conHeader">
-        <div style="float:left;margin-top: 8px;cursor: pointer;" @click="isCollapse=!isCollapse">
-          <svg
-            t="1574762957718"
-            :class="['icon',{'turn180d':isCollapse}]"
-            viewBox="0 0 1024 1024"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            p-id="1906"
-            width="23"
-            height="23"
+        <div style="float:left;">
+          <div @click="isCollapse=!isCollapse" id="collapse">
+            <svg
+              t="1574762957718"
+              :class="['icon',{'turn180d':isCollapse}]"
+              viewBox="0 0 1024 1024"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              p-id="1906"
+              width="23"
+              height="23"
+            >
+              <path
+                d="M914.4 674.9H394.7c-25.2 0-45.6-22-45.6-48.9s20.4-48.9 45.6-48.9h519.7c25.2 0 45.6 22 45.6 48.9s-20.4 48.9-45.6 48.9z m0-228.1H394.7c-25.2 0-45.6-22-45.6-48.9s20.4-48.9 45.6-48.9h519.7c25.2 0 45.6 22 45.6 48.9s-20.4 48.9-45.6 48.9z m-3.3-219.9H115.3c-26.9 0-50.5-20.4-51.3-47.2-0.8-27.7 21.2-50.5 48.9-50.5h795.8c26.9 0 50.5 20.4 51.3 47.2 0.8 27.7-21.2 50.5-48.9 50.5zM291.3 674.1V349.9L64 512l227.3 162.1c0 0.8 0 0.8 0 0z m-178.4 123h795.8c26.9 0 50.5 20.4 51.3 47.2 0.8 27.7-21.2 50.5-48.9 50.5H115.3c-26.9 0-50.5-20.4-51.3-47.2-0.8-27.7 21.2-50.5 48.9-50.5z"
+                p-id="1907"
+                fill="#909399"
+              />
+            </svg>
+          </div>
+          <!-- <el-input v-model="serchInput" placeholder="请输入内容" style="width:230px"></el-input> -->
+          <el-select
+            v-model="serchInput"
+            filterable
+            remote
+            @change="selectChange"
+            :remote-method="remoteMethod"
+            placeholder="请输入页面"
           >
-            <path
-              d="M914.4 674.9H394.7c-25.2 0-45.6-22-45.6-48.9s20.4-48.9 45.6-48.9h519.7c25.2 0 45.6 22 45.6 48.9s-20.4 48.9-45.6 48.9z m0-228.1H394.7c-25.2 0-45.6-22-45.6-48.9s20.4-48.9 45.6-48.9h519.7c25.2 0 45.6 22 45.6 48.9s-20.4 48.9-45.6 48.9z m-3.3-219.9H115.3c-26.9 0-50.5-20.4-51.3-47.2-0.8-27.7 21.2-50.5 48.9-50.5h795.8c26.9 0 50.5 20.4 51.3 47.2 0.8 27.7-21.2 50.5-48.9 50.5zM291.3 674.1V349.9L64 512l227.3 162.1c0 0.8 0 0.8 0 0z m-178.4 123h795.8c26.9 0 50.5 20.4 51.3 47.2 0.8 27.7-21.2 50.5-48.9 50.5H115.3c-26.9 0-50.5-20.4-51.3-47.2-0.8-27.7 21.2-50.5 48.9-50.5z"
-              p-id="1907"
-              fill="#909399"
-            />
-          </svg>
+            <el-option
+              v-for="item in serchList"
+              :key="item.name"
+              :label="item.name"
+              :value="item.path"
+            ></el-option>
+          </el-select>
         </div>
         <div style="text-align: right;">
           <span>欢迎！张张你大爷</span>
@@ -108,7 +126,9 @@ export default {
           close: false
         }
       ],
-      isCollapse: false
+      isCollapse: false,
+      serchInput: [],
+      serchList: []
     };
   },
   computed: mapState(["navMenus"]),
@@ -118,10 +138,10 @@ export default {
     const that = this;
     window.onresize = () => {
       return (() => {
-        if(document.body.clientWidth < 992){
-          that.isCollapse = true
-        }else{
-          that.isCollapse = false
+        if (document.body.clientWidth < 992) {
+          that.isCollapse = true;
+        } else {
+          that.isCollapse = false;
         }
       })();
     };
@@ -132,6 +152,27 @@ export default {
     }
   },
   methods: {
+    selectChange(val){
+      this.$router.push(val)
+    },
+    remoteMethod(query) {
+      if (query.trim() !== "") {
+        this.digui(this.navMenus, query)
+      } else {
+        this.serchList = [];
+      }
+    },
+    digui(list, query) {
+      list.forEach(item => {
+        if (item.children && item.children.length > 0) {
+          this.digui(item.children, query);
+        } else {
+          if (item.name.indexOf(query) != -1) {
+            this.serchList.push(item);
+          }
+        }
+      });
+    },
     curTab(cur) {
       var flag = this.editableTabs.some(v => v.name == cur.path);
       if (!flag)
@@ -171,13 +212,21 @@ export default {
   background-color: #232730;
   color: #fff;
 }
+#collapse {
+  display: inline-block;
+  cursor: pointer;
+  padding-right: 28px;
+  height: 60px;
+  padding-top: 8px;
+  vertical-align: middle;
+}
 .aside200 {
   width: 200px !important;
 }
 .aside64 {
   width: 64px !important;
 }
-.turn180d{
+.turn180d {
   transform: rotate(180deg);
 }
 </style>
